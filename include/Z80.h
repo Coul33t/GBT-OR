@@ -3,6 +3,12 @@
 
 #include <cstdint>
 #include <iostream>
+#include <bitset>
+
+#define FLAG_C 0x10
+#define FLAG_H 0x20
+#define FLAG_N 0x40
+#define FLAG_Z 0x80
 
 struct Clock {
     unsigned int m, t;
@@ -38,8 +44,8 @@ class Z80 {
 };
 
 // A, B, C, D, E, H, L : general purpose registers
-// F : flag register -> 0x10 = carry (over 255 for additions, under 0 for subtractions)
-//                      0x20 = half-carry (result of the last op, lower half of the byte overflowed past 15)
-//                      0x40 = operation (last op was a subtraction)
-//                      0x80 = Zero (last op produced 0)
+// F : flag register -> 0x10 -> FLAG_C = carry (over 255 for additions, under 0 for subtractions)
+//                      0x20 -> FLAG_H = half-carry (result of the last op, lower half of the byte overflowed past 15)
+//                      0x40 -> FLAG_N = operation (last op was a subtraction)
+//                      0x80 -> FLAG_Z = Zero (last op produced 0)
 #endif // Z80_H

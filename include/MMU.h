@@ -1,6 +1,7 @@
 #ifndef MMU_H
 #define MMU_H
 
+#include <cstdint>
 
 class MMU
 {
