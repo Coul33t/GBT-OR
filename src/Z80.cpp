@@ -52,11 +52,13 @@ void Z80::print_registers(void) {
     std::cout << "Clock T: " << std::bitset<8>(this->clock.t) << " (" << (unsigned int)this->clock.t << ")" << std::endl;
 }
 
+// No operation
 void Z80::NOP(void) {
     this->m = 1;
     this->t = 4;
 }
 
+// Adds reg2 to reg1
 void Z80::ADD(uint8_t& reg1, uint8_t& reg2) {
     reg1 += reg2;
     this->f = 0;
@@ -67,6 +69,7 @@ void Z80::ADD(uint8_t& reg1, uint8_t& reg2) {
     this->t = 4;
 }
 
+// Compares reg1 to reg2
 void Z80::CPR(uint8_t& reg1, uint8_t& reg2) {
     uint8_t i = reg1;
     i -= reg2;

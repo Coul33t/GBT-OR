@@ -21,9 +21,12 @@ class Z80 {
         void reset(void);
         void print_registers(void);
 
+        // No operation
         void NOP(void);
 
+        // Adds reg2 to reg1
         void ADD(uint8_t& reg1, uint8_t& reg2);
+        // Compares reg1 to reg2
         void CPR(uint8_t& reg1, uint8_t& reg2);
 
 
