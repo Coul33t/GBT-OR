@@ -34,9 +34,14 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/GB.h" />
 		<Unit filename="include/MMU.h" />
 		<Unit filename="include/Z80.h" />
+		<Unit filename="include/common_includes.h" />
+		<Unit filename="include/op_code.h" />
+		<Unit filename="include/registers.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/GB.cpp" />
 		<Unit filename="src/MMU.cpp" />
 		<Unit filename="src/Z80.cpp" />
 		<Extensions>

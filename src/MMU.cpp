@@ -9,12 +9,12 @@ MMU::~MMU() {
 }
 
 // Read 8 bits from addr
-void MMU::RB(uint16_t& addr) {
+uint8_t MMU::RB(uint16_t& addr) {
 
 }
 
 // Read 16 bits from addr
-void MMU::RW(uint16_t& addr) {
+uint16_t MMU::RW(uint16_t& addr) {
 
 }
 
