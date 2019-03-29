@@ -70,30 +70,93 @@ void Z80::NOP(void) {
     this->t = 4;
 }
 
-// Adds reg2 (8bits) to reg1 (8bits)
-void Z80::LDrr(uint8_t& reg1, uint8_t& reg2) {
-    reg1 += reg2;
+// OPCODE 06
+void Z80::LDBn() {
+
+    this->m = 2;
+    this->t = 8;
+}
+
+// OPCODE 21
+void Z80::LDHLnn() {
+    this->reg.hl = this->mmu.RW(this->reg.pc);
+    this->reg.pc += 2;
+    this->m = 3;
+    this->t = 12;
+}
+
+// OPCODE 31
+void Z80::LDSPnn() {
+    this->reg.sp = this->mmu.RW(this->reg.pc);
+    this->reg.pc += 2;
+    this->m = 3;
+    this->t = 12;
+}
+
+// OPCODE 9F
+void Z80::SBCAA() {
+    this->reg.a -= this->reg.a;
+
+    if (check_underflow(this->reg.a, this->reg.a - (this->reg.f & FLAG_C)))
+        this->reg.f |= FLAG_C;
+
+    this->reg.a -= (this->reg.f & FLAG_C)?1:0;
+
+    if (!(this->reg.a & 255))
+        this->reg.f |= FLAG_Z;
+
+    this->reg.f |= FLAG_N;
+    this->reg.f |= FLAG_Z;
+
     this->m = 1;
     this->t = 4;
 }
 
-// Adds reg2 (8bits) to reg1 (16bits)
-void Z80::LDrr(uint16_t& reg1, uint8_t& reg2) {
-    reg1 += reg2;
+// OPCODE AF
+void Z80::XORA() {
+    this->reg.a ^= this->reg.a;
+    this->reg.f = 0x00;
+    if(!(this->reg.a & 255))
+        this->reg.f |= FLAG_Z;
 
     this->m = 1;
     this->t = 4;
 }
 
-// Adds reg2 (16bits) to reg1 (8bits)
-void Z80::LDrr(uint8_t& reg1, uint16_t& reg2) {
-    reg1 += reg2;
+//OPCODE FE
+void Z80::CPn() {
+    uint8_t i = this->reg.a;
+    if(check_underflow(i, this->mmu.RB(this->reg.pc)))
+        this->reg.f |= FLAG_C;
 
-    this->m = 1;
-    this->t = 4;
+    i -= this->mmu.RB(this->reg.pc);
+
+    if (!(i & 255))
+        this->reg.f |= FLAG_Z;
+
+    this->m = 2;
+    this->t = 8;
+}
+
+// OPCODE FF
+void Z80::RST38() {
+    this->reg.sp -= 2;
+    this->mmu.WW(this->reg.sp, this->reg.pc);
+    this->reg.pc = 0x38;
+    this->m = 8;
+    this->t = 32;
 }
 
 void Z80::set_implemented_opcodes(void) {
     this->implemented_opcodes.push_back(instruction((uint8_t)0x00, std::string("NOP"), (void*)&Z80::NOP));
+
+    //this->implemented_opcodes.push_back(instruction((uint8_t)0x06, std::string("LDBn"), (void*)&Z80::LDBn));
+
+    this->implemented_opcodes.push_back(instruction((uint8_t)0x21, std::string("LD_HL_nn"), (void*)&Z80::LDHLnn));
+    this->implemented_opcodes.push_back(instruction((uint8_t)0x31, std::string("LD_SP_nn"), (void*)&Z80::LDSPnn));
+    this->implemented_opcodes.push_back(instruction((uint8_t)0x9F, std::string("SBC_A_A"), (void*)&Z80::SBCAA));
+    this->implemented_opcodes.push_back(instruction((uint8_t)0xAF, std::string("XOR_A"), (void*)&Z80::XORA));
+    this->implemented_opcodes.push_back(instruction((uint8_t)0xFE, std::string("CP_n"), (void*)&Z80::CPn));
+    this->implemented_opcodes.push_back(instruction((uint8_t)0xFF, std::string("RST_38"), (void*)&Z80::RST38));
 }
 

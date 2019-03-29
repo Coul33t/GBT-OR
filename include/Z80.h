@@ -48,19 +48,14 @@ class Z80 {
         // Checks for reg1 + reg2 > 255
         bool check_overflow(uint8_t reg1, uint8_t reg2);
 
-        // No operation
-        void NOP(void);
-
-        // Put val into reg1
-        // Adds reg2 to reg1
-        void LDrr(uint8_t& reg1, uint8_t& reg2);
-        void LDrr(uint16_t& reg1, uint8_t& reg2);
-        void LDrr(uint8_t& reg1, uint16_t& reg2);
-
-        // Put value into reg1
-        // reg1 = B, C, D, E, H, L, BC, DE, HL, SP
-        void LDnn(uint8_t& reg1, uint8_t val);
-        void LDnn(uint16_t& reg1, uint8_t val);
+        void NOP(void);     // 00
+        void LDBn(void);    // 06
+        void LDHLnn(void);  // 21
+        void LDSPnn(void);  // 31
+        void SBCAA(void);   // 9F
+        void XORA(void);    // AF
+        void CPn(void);     // FE
+        void RST38(void);   // FF
 
 
         // Yeah I don't want to bother with accessors
